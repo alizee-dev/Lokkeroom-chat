@@ -9,7 +9,7 @@ Built as part of a BeCode challenge (Express Advanced).
 
 ## Demo
 
-![demo video](screenshots/demo.mp4)
+![Demo](screenshots/demo.gif)
 
 ![Home page](screenshots/home.png)
 
