@@ -11,8 +11,6 @@ Built as part of a BeCode challenge (Express Advanced).
 
 ![Demo](screenshots/demo.gif)
 
-![Home page](screenshots/home.png)
-
 ![Lobby chat](screenshots/lobby.png)
 
 
