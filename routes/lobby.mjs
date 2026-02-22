@@ -142,15 +142,14 @@ router.get("/:lobbyId/users", async (req, res, next) => {
 //  }
 //})
 router.get("/:lobbyId", async (req, res, next) => {
+  if (!req.user) return res.redirect('/api/login')
+  
   const lobbyId = req.params.lobbyId
   try {
-    // On récupère le titre du lobby
     const lobbyResult = await pool.query(
       'SELECT * FROM lobby WHERE id = ?',
       [lobbyId]
     )
-
-    // On récupère les messages avec le nom de l'auteur
     const messagesResult = await pool.query(
       `SELECT messages.content, messages.timeStamp, users.name 
        FROM messages 
@@ -160,10 +159,10 @@ router.get("/:lobbyId", async (req, res, next) => {
       [lobbyId]
     )
 
-    // On envoie tout ça à la vue
     res.render('lobby', {
       lobby: lobbyResult[0],
-      messages: messagesResult
+      messages: messagesResult,
+      user: req.user  // ← NOUVEAU
     })
 
   } catch (err) {

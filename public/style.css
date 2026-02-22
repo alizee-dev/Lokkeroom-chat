@@ -1,0 +1,253 @@
+/* ===== RESET & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f6fa;
+    color: #2d3436;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ===== HEADER ===== */
+header {
+    background-color: #1a1a2e;
+    padding: 0 40px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.header-nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 24px;
+}
+
+.nav-links a {
+    color: #b2bec3;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: white;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background-color: #1a1a2e;
+    color: #b2bec3;
+    text-align: center;
+    padding: 16px;
+    font-size: 13px;
+    margin-top: auto;
+}
+
+/* ===== CONTENU PRINCIPAL ===== */
+main {
+    flex: 1;
+    max-width: 800px;
+    width: 100%;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* ===== FORMULAIRES ===== */
+form {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+form h1 {
+    margin-bottom: 24px;
+    font-size: 24px;
+    color: #1a1a2e;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #636e72;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #1a1a2e;
+}
+
+button[type="submit"],
+#sendButton {
+    background-color: #1a1a2e;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button[type="submit"]:hover,
+#sendButton:hover {
+    background-color: #2d2d5e;
+}
+
+/* ===== PAGE DE CHAT ===== */
+.chat-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.chat-header {
+    background-color: #1a1a2e;
+    color: white;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h1 {
+    font-size: 20px;
+}
+
+.chat-header a {
+    color: #b2bec3;
+    font-size: 13px;
+    transition: color 0.2s;
+}
+
+.chat-header a:hover {
+    color: white;
+}
+
+#messages {
+    padding: 24px;
+    max-height: 500px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.message-block {
+    background: #f5f6fa;
+    border-radius: 8px;
+    padding: 12px 16px;
+}
+
+.message-block .message-meta {
+    font-size: 13px;
+    color: #636e72;
+    margin-bottom: 6px;
+}
+
+.message-block .message-meta strong {
+    color: #1a1a2e;
+}
+
+.message-block p {
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.chat-input {
+    padding: 16px 24px;
+    border-top: 1px solid #dfe6e9;
+    display: flex;
+    gap: 12px;
+}
+
+#messageInput {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    font-size: 15px;
+    resize: none;
+    font-family: inherit;
+}
+
+#messageInput:focus {
+    outline: none;
+    border-color: #1a1a2e;
+}
+
+/* ===== PAGE D'ACCUEIL ===== */
+.welcome {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 40px;
+    text-align: center;
+}
+
+.welcome h1 {
+    font-size: 32px;
+    color: #1a1a2e;
+    margin-bottom: 12px;
+}
+
+.welcome p {
+    color: #636e72;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.welcome a {
+    color: #1a1a2e;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+/* ===== MESSAGES D'ERREUR ===== */
+.error-message {
+    background-color: #ffeaa7;
+    color: #d63031;
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}

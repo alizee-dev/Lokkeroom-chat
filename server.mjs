@@ -4,16 +4,21 @@ dotenv.config()
 import express from "express"
 const app = express()
 
+// ← NOUVEAU : on crée un serveur HTTP explicitement
+import { createServer } from "http"
+const httpServer = createServer(app)
+
+// ← NOUVEAU : on attache Socket.io à ce serveur
+import { Server } from "socket.io"
+const io = new Server(httpServer)
+
 import expressLayouts from "express-ejs-layouts"
 import session from "express-session"
 import flash from "express-flash"
 import passport from "passport"
 import pool from "./db.mjs"
-
-// Import de passport-config
 import initializePassport from "./passport-config.mjs"
 
-// Fonctions pour trouver un utilisateur dans la base de données
 const getUserByEmail = async (email) => {
     const rows = await pool.query('SELECT * FROM users WHERE email = ?', [email])
     return rows[0] || null
@@ -24,17 +29,14 @@ const getUserById = async (id) => {
     return rows[0] || null
 }
 
-// Initialisation de Passport
 initializePassport(passport, getUserByEmail, getUserById)
 
-// Configuration du moteur de vues
 app.set("view engine", "ejs")
 app.set("views", "/home/alizee/becode_exo/hill/expressAdvanced" + "/views")
 app.set("layout", "layouts/layout")
 app.use(expressLayouts)
 app.use(express.static("public"))
 
-// Middlewares globaux
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(flash())
@@ -46,7 +48,6 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-// Routes
 import indexRouter from "./routes/index.mjs"
 
 app.get("/", (req, res) => {
@@ -54,7 +55,32 @@ app.get("/", (req, res) => {
 })
 app.use("/api", indexRouter)
 
-app.listen(process.env.PORT || 3000)
+// ← NOUVEAU : la logique Socket.io
+io.on("connection", (socket) => {
+    console.log("Un utilisateur s'est connecté ✅")
+
+    // L'utilisateur rejoint la "room" du lobby
+    socket.on("joinLobby", (lobbyId) => {
+        socket.join(lobbyId)
+        console.log(`Un utilisateur a rejoint le lobby ${lobbyId}`)
+    })
+
+    // L'utilisateur envoie un message
+    socket.on("newMessage", (data) => {
+        // On renvoie le message à tous les utilisateurs du même lobby
+        io.to(data.lobbyId).emit("receiveMessage", data)
+    })
+
+    socket.on("disconnect", () => {
+        console.log("Un utilisateur s'est déconnecté")
+    })
+})
+
+// ← NOUVEAU : c'est httpServer qui écoute, plus app
+httpServer.listen(process.env.PORT || 3000, () => {
+    console.log("Serveur démarré sur le port 3000 🚀")
+})
+
 
 ////////////////////////////////////////////////////////////////////////////////////////
 

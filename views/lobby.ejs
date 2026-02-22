@@ -1,36 +1,63 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title><%= lobby.title %></title>
-</head>
-<body>
+<div class="chat-container">
+    <div class="chat-header">
+        <h1><%= lobby.title %></h1>
+        <a href="/">← Retour à l'accueil</a>
+    </div>
 
-    <h1><%= lobby.title %></h1>
-    <a href="/">← Retour à l'accueil</a>
+    <div id="messages">
+        <% if (messages.length === 0) { %>
+            <p>Aucun message dans ce lobby pour l'instant.</p>
+        <% } else { %>
+            <% messages.forEach(message => { %>
+                <div class="message-block">
+                    <div class="message-meta">
+                        <strong><%= message.name %></strong>
+                        <span>— <%= new Date(message.timeStamp).toLocaleString('fr-BE') %></span>
+                    </div>
+                    <p><%= message.content %></p>
+                </div>
+            <% }) %>
+        <% } %>
+    </div>
 
-    <hr>
+    <div class="chat-input">
+        <textarea id="messageInput" placeholder="Ton message..." rows="2"></textarea>
+        <button id="sendButton">Envoyer</button>
+    </div>
+</div>
 
-    <h2>Messages</h2>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io()
+    const lobbyId = "<%= lobby.id %>"
+    const userName = "<%= user.name %>"
 
-    <% if (messages.length === 0) { %>
-        <p>Aucun message dans ce lobby pour l'instant.</p>
-    <% } else { %>
-        <% messages.forEach(message => { %>
-            <div>
-                <strong><%= message.name %></strong>
-                <span>— <%= message.timeStamp %></span>
-                <p><%= message.content %></p>
+    socket.emit("joinLobby", lobbyId)
+
+    document.getElementById("sendButton").addEventListener("click", () => {
+        const content = document.getElementById("messageInput").value.trim()
+        if (!content) return
+        socket.emit("newMessage", {
+            lobbyId: lobbyId,
+            content: content,
+            name: userName,
+            timeStamp: new Date().toLocaleString('fr-BE')
+        })
+        document.getElementById("messageInput").value = ""
+    })
+
+    socket.on("receiveMessage", (data) => {
+        const messagesDiv = document.getElementById("messages")
+        const messageBlock = document.createElement("div")
+        messageBlock.classList.add("message-block")
+        messageBlock.innerHTML = `
+            <div class="message-meta">
+                <strong>${data.name}</strong>
+                <span>— ${data.timeStamp}</span>
             </div>
-            <hr>
-        <% }) %>
-    <% } %>
-
-    <h2>Envoyer un message</h2>
-    <form action="/api/lobby/<%= lobby.id %>" method="POST">
-        <textarea name="content" placeholder="Ton message..." required></textarea>
-        <br>
-        <button type="submit">Envoyer</button>
-    </form>
-
-</body>
-</html>
+            <p>${data.content}</p>
+        `
+        messagesDiv.appendChild(messageBlock)
+        messagesDiv.scrollTop = messagesDiv.scrollHeight
+    })
+</script>
