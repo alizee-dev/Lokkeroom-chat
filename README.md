@@ -22,6 +22,31 @@ Built as part of a BeCode challenge (Express Advanced).
 - Passwords hashed with bcrypt, persistent sessions with Passport.js
 
 
+## Installation
+
+**Prerequisites:** Node.js and MariaDB installed on your machine.
+```bash
+git clone https://github.com/alizee-dev/Lokkeroom---chat.git
+cd Lokkeroom---chat
+npm install
+```
+
+Create a `.env` file at the root of the project:
+```
+SESSION_SECRET=your_secret_phrase
+password_Maria=your_mariadb_password
+PORT=3000
+```
+
+Set up the database — create a `lokkeroom2` database in MariaDB with the following tables: `users`, `lobby`, `messages`, `lobbies_has_users`.
+
+Then start the app:
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+
 ## Tech Stack
 
 **Server:** Node.js, Express.js, Socket.io, Passport.js, bcrypt, MariaDB, express-session
